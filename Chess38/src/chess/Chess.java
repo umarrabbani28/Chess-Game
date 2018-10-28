@@ -9,7 +9,7 @@ public class Chess {
 	public static Piece[][] board; // game board
 	public static boolean gameOver = false; // if game isn't over
 	public static boolean isWhiteTurn = true; // who's turn it is
-	public static boolean drawRequested = false; // requested draw
+	public static boolean drawRequested = false; // a draw is requested
 	
 	public static void main(String[] args) {
 		
