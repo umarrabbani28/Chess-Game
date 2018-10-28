@@ -15,9 +15,15 @@ public abstract class Piece {
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX; this.y = positionY;
+			
+			return true;
 		}
 		
 		return false;
+	}
+	
+	public String getColor() {
+		return color;
 	}
 	
 	// checks if move is valid

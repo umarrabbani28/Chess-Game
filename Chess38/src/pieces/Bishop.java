@@ -14,7 +14,7 @@ public class Bishop extends Piece {
 		//check in all diagonal directions
 		
 		//check up-left direction
-		for (int i=x-1,j=y+1;x>=0 && j<=7; i--,j++) {
+		for (int i=x-1,j=y+1;i>=0 && j<=7; i--,j++) {
 			Piece temp = chess.Chess.board[i][j];
 			
 			// if empty spot
@@ -40,7 +40,7 @@ public class Bishop extends Piece {
 		}
 		
 		//check up-right
-		for (int i=x+1,j=y+1;x<=0 && j<=7; i++,j++) {
+		for (int i=x+1,j=y+1;i<=0 && j<=7; i++,j++) {
 			Piece temp = chess.Chess.board[i][j];
 			
 			// if empty spot
@@ -66,7 +66,7 @@ public class Bishop extends Piece {
 		}
 		
 		//check bottom-left
-		for (int i=x-1,j=y-1;x>=0 && j>=0; i--,j--) {
+		for (int i=x-1,j=y-1;i>=0 && j>=0; i--,j--) {
 			Piece temp = chess.Chess.board[i][j];
 			
 			// if empty spot
@@ -93,7 +93,7 @@ public class Bishop extends Piece {
 		
 		//bottom-right
 		//check bottom-left
-		for (int i=x+1, j=y-1; x<=7 && j>=0; i++,j--) {
+		for (int i=x+1, j=y-1; i<=7 && j>=0; i++,j--) {
 			Piece temp = chess.Chess.board[i][j];
 
 			// if empty spot

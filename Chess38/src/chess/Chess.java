@@ -7,32 +7,75 @@ import pieces.*;
 public class Chess {
 	
 	public static Piece[][] board; // game board
-	public static boolean checkMate = false; // if game isn't over
+	public static boolean gameOver = false; // if game isn't over
 	public static boolean isWhiteTurn = true; // who's turn it is
+	public static boolean drawRequested = false; // requested draw
 	
 	public static void main(String[] args) {
-		initializeBoard();
 		
+		initializeBoard();
 		drawBoard();
 		
 		Scanner input = new Scanner(System.in);
+		boolean validMove;
 		
-		while(!checkMate) {
-			if (isWhiteTurn) {
-				System.out.print("White's move: ");
+		while(!gameOver) {
+			validMove = false;
+
+			while (!validMove) {
+				if (isWhiteTurn)
+					System.out.print("White's move: ");
+				else
+					System.out.print("Black's move: ");
+				
 				String instruction = input.nextLine();
 				System.out.println();
 				
-				if (instruction.equals("exit"))
-					checkMate = true;
-				else {
-					drawBoard();
-					executeInstruction(instruction);
-					checkMate = true;
+				// resign
+				if (instruction.equals("resign")) {
+					if (isWhiteTurn)
+						System.out.println("Black wins");
+					else
+						System.out.println("White wins");
+					
+					gameOver = true;
+					break;
 				}
-
-			}
+				
+				// draw
+				if (instruction.length()>=6 && instruction.substring(6).equals("draw?")) {
+					drawRequested = true;
+				} else if (instruction.equals("draw")) {
+					if (drawRequested) {
+						System.out.println("draw");
+						gameOver = true;
+						break;
+					} else {
+						System.out.println("Illegal move, try again");
+						System.out.println();
+						continue;
+					}
+				} else {
+					if (drawRequested) {
+						drawRequested = false;
+					}
+				}
+				
+				validMove = executeInstruction(instruction);
+				if (validMove) {
+					drawBoard();
+					isWhiteTurn = !isWhiteTurn;
+				} else {
+					drawRequested = false;
+					System.out.println("Illegal move, try again");
+					System.out.println();
+				}
+			}		
+			
 		}
+		
+		input.close();
+		
 	}
 	
 	// sets up initial game board
@@ -43,65 +86,67 @@ public class Chess {
 		
 		//pawns
 		for (int j=0;j<8;j++) {
-			board[1][j] = new Pawn(1,j,"black");
-			board[6][j] = new Pawn(1,j,"white");
+			board[j][6] = new Pawn(j,6,"black");
+			board[j][1] = new Pawn(j,1,"white");
 		}
 		
 		//rooks
-		board[0][0] = new Rook(0,0,"black");
 		board[0][7] = new Rook(0,7,"black");
+		board[7][7] = new Rook(7,7,"black");
 		
-		board[7][0] = new Rook(0,0,"white");
-		board[7][7] = new Rook(7,7,"white");
+		board[0][0] = new Rook(0,0,"white");
+		board[7][0] = new Rook(7,0,"white");
 		
 		//knights
-		board[0][1] = new Knight(0,1,"black");
-		board[0][6] = new Knight(0,6,"black");
+		board[1][7] = new Knight(1,7,"black");
+		board[6][7] = new Knight(6,7,"black");
 		
-		board[7][1] = new Knight(7,1,"white");
-		board[7][6] = new Knight(7,6,"white");
+		board[1][0] = new Knight(1,0,"white");
+		board[6][0] = new Knight(6,0,"white");
 		
 		//bishops
-		board[0][2] = new Bishop(0,2,"black");
-		board[0][5] = new Bishop(0,5,"black");
+		board[2][7] = new Bishop(2,7,"black");
+		board[5][7] = new Bishop(5,7,"black");
 		
-		board[7][2] = new Bishop(7,2,"white");
-		board[7][5] = new Bishop(7,5,"white");
+		board[2][0] = new Bishop(2,0,"white");
+		board[5][0] = new Bishop(5,0,"white");
 		
 		//queens
-		board[0][3] = new Queen(0,3,"black");
+		board[3][7] = new Queen(3,7,"black");
 		
-		board[7][3] = new Queen(7,3,"white");
+		board[3][0] = new Queen(3,0,"white");
 		
 		//kings
-		board[0][4] = new King(0,4,"black");
+		board[4][7] = new King(4,7,"black");
 		
-		board[7][4] = new King(7,4,"white");
+		board[4][0] = new King(4,0,"white");
+		
+		
 	}
 	
 	// print out board
-	public static void drawBoard() {
-		for (int i=0;i<8;i++) {
+	public static void drawBoard() {	
+		for (int i=7;i>=0;i--) {
 			for (int j=0;j<8;j++) {
-				if (board[i][j] == null) {
+				if (board[j][i] == null) {
 					if ((j%2 != 0 && i%2 == 0) || (j%2 == 0 && i%2 != 0)) {
 						System.out.print("## ");
 					} else {
 						System.out.print("   ");
 					}
 				} else {
-					System.out.print(board[i][j] + " ");
+					System.out.print(board[j][i] + " ");
 				}
 				
 			}
-			System.out.println(8-i);
+			System.out.println(i+1);
 		}
 		
 		System.out.println(" a  b  c  d  e  f  g  h");
 		System.out.println();
 	}
 	
-	public static void executeInstruction(String instruction) {
+	public static boolean executeInstruction(String instruction) {
 		String selectedPiece = instruction.substring(0, 2);
 		String selectedSpot = instruction.substring(3, 5);
 		
@@ -133,7 +178,7 @@ public class Chess {
 			pieceX = 7;
 			break;
 		default:
-			pieceX = 10;
+			pieceX = -1;
 		}
 		
 		pieceY = Integer.parseInt(selectedPiece.substring(1)) - 1;
@@ -168,10 +213,24 @@ public class Chess {
 		}
 		
 		spotY = Integer.parseInt(selectedSpot.substring(1)) - 1;
-		
+
 		Piece piece = board[pieceX][pieceY];
 		
-		piece.move(spotX, spotY);
+		boolean allowedPiece = false;
+		if (piece != null) {
+			if (isWhiteTurn && piece.getColor().equals("white"))
+				allowedPiece = true;
+			else if (!isWhiteTurn && piece.getColor().equals("black"))
+				allowedPiece = true;
+		}
+			
+		
+		if (allowedPiece) {
+			if (piece.move(spotX, spotY))
+				return true;
+		}
+		
+		return false;
 	}
 
 	

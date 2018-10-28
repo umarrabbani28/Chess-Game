@@ -18,9 +18,11 @@ public class Pawn extends Piece {
 			this.x = positionX; this.y = positionY;
 			
 			this.isFirstMove = false;
+			
+			return true;
 
 		}
-		
+		 
 		return false;
 
 	}
