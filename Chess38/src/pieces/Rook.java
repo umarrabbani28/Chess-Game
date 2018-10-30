@@ -60,7 +60,7 @@ public class Rook extends Piece {
 		}
 
 		// check leftwards
-		for (int i = x - 1; i >= 0; x--) {
+		for (int i = x - 1; i >= 0; i--) {
 			// empty spot
 			if (chess.Chess.board[i][y] == null) {
 				if (positionX == i && positionY == y) {
@@ -81,7 +81,7 @@ public class Rook extends Piece {
 		}
 
 		// rightwards
-		for (int i = x + 1; i <= 7; x++) {
+		for (int i = x + 1; i <= 7; i++) {
 			// empty spot
 			if (chess.Chess.board[i][y] == null) {
 				if (positionX == i && positionY == y) {

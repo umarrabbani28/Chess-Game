@@ -26,6 +26,10 @@ public abstract class Piece {
 		return color;
 	}
 	
+	public int getY() {
+		return y;
+	}
+	
 	// checks if move is valid
 	public abstract boolean isValid(int positionX, int positionY);
 	

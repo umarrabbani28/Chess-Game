@@ -11,6 +11,10 @@ public class Chess {
 	public static boolean isWhiteTurn = true; // who's turn it is
 	public static boolean drawRequested = false; // a draw is requested
 	
+	// used for en passant
+	public static int pawnMovedDouble = 0; 
+	public static Piece enPassantPawn = null;
+	
 	public static void main(String[] args) {
 		
 		initializeBoard();
@@ -65,12 +69,21 @@ public class Chess {
 				if (validMove) {
 					drawBoard();
 					isWhiteTurn = !isWhiteTurn;
+					
 				} else {
 					drawRequested = false;
 					System.out.println("Illegal move, try again");
 					System.out.println();
 				}
-			}		
+			}
+			
+			// insures only move following a double pawn move can complete en passant
+			if (pawnMovedDouble > 1)
+				pawnMovedDouble--;
+			else if (pawnMovedDouble == 1) {
+				pawnMovedDouble--;
+				((Pawn)enPassantPawn).justMovedDouble = false;
+			}
 			
 		}
 		
@@ -216,6 +229,7 @@ public class Chess {
 
 		Piece piece = board[pieceX][pieceY];
 		
+		// ensure user only moves their piece
 		boolean allowedPiece = false;
 		if (piece != null) {
 			if (isWhiteTurn && piece.getColor().equals("white"))
@@ -226,9 +240,26 @@ public class Chess {
 			
 		
 		if (allowedPiece) {
-			if (piece.move(spotX, spotY))
+			if (piece.move(spotX, spotY)) {
+				
+				// en passant
+				if (piece instanceof Pawn) {
+					
+					// promotion
+					if (((Pawn) piece).canPromote) {
+						((Pawn)piece).Promote(instruction);
+					}
+					
+					if (((Pawn) piece).justMovedDouble) {					
+						pawnMovedDouble = 2;
+						if (enPassantPawn != null)
+							((Pawn)enPassantPawn).justMovedDouble = false;
+						enPassantPawn = piece;
+					}
+				}
 				return true;
-		}
+			}
+		} 
 		
 		return false;
 	}
