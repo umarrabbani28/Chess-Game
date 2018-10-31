@@ -11,6 +11,10 @@ public class Chess {
 	public static boolean isWhiteTurn = true; // who's turn it is
 	public static boolean drawRequested = false; // a draw is requested
 	
+	//used for check
+	public static boolean blackChecked = false;
+	public static boolean whiteChecked = false;
+	
 	// used for en passant
 	public static int pawnMovedDouble = 0; 
 	public static Piece enPassantPawn = null;
@@ -27,10 +31,19 @@ public class Chess {
 			validMove = false;
 
 			while (!validMove) {
-				if (isWhiteTurn)
+				if (isWhiteTurn) {
+					if (whiteChecked) {
+						System.out.println("Check");
+						System.out.println();
+					}
 					System.out.print("White's move: ");
-				else
+				}else {
+					if (blackChecked) {
+						System.out.println("Check");
+						System.out.println();
+					}
 					System.out.print("Black's move: ");
+				}
 				
 				String instruction = input.nextLine();
 				System.out.println();
@@ -66,7 +79,33 @@ public class Chess {
 				}
 				
 				validMove = executeInstruction(instruction);
+				
 				if (validMove) {
+					if (isWhiteTurn)
+						whiteChecked = false;
+					else
+						blackChecked = false;
+					
+					// if opponent's king is in check
+					String checkColor;
+					if (isWhiteTurn)
+						checkColor = "black";
+					else
+						checkColor = "white";
+					
+					if (kingCheck(checkColor)) {
+						// checks for checkmate
+						
+						if (!isCheckMate()) {
+							if (isWhiteTurn)
+								blackChecked = true;
+							else
+								whiteChecked = true;
+						} else {
+							// game is over
+						}
+					} 
+					
 					drawBoard();
 					isWhiteTurn = !isWhiteTurn;
 					
@@ -157,6 +196,29 @@ public class Chess {
 		
 		System.out.println(" a  b  c  d  e  f  g  h");
 		System.out.println();
+	}
+	
+	// given a color, finds it's king, and sees if it is in check
+	public static boolean kingCheck(String color) {
+		
+		// find opponents king
+		for (int i=0;i<=7;i++) {
+			for (int j=0;j<=7;j++) {
+				Piece temp = board[i][j];
+				if (temp != null && temp instanceof King) {
+					if (temp.getColor().equals(color))
+						return ((King) temp).isCheck(temp.getX(), temp.getY());
+				}
+
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean isCheckMate() {
+		
+		return false;
 	}
 	
 	public static boolean executeInstruction(String instruction) {

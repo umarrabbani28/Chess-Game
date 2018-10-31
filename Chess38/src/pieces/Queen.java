@@ -122,7 +122,7 @@ public class Queen extends Piece {
 		}
 
 		// check up-right
-		for (int i = x + 1, j = y + 1; i <= 0 && j <= 7; i++, j++) {
+		for (int i = x + 1, j = y + 1; i <= 7 && j <= 7; i++, j++) {
 			Piece temp = chess.Chess.board[i][j];
 
 			// if empty spot

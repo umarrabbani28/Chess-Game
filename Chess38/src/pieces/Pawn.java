@@ -23,36 +23,82 @@ public class Pawn extends Piece {
 	public boolean move(int positionX, int positionY) {
 		// TODO Auto-generated method stub
 		if (this.isValid(positionX, positionY)) {
+			
+			// incase of undo
+			Piece oldPiece = chess.Chess.board[positionX][positionY];
+			int oldX = x;
+			int oldY = y;
+			boolean originalFirstMove = isFirstMove;
+			Piece temp = null;
+			String enpassantType = "";
+			
+			// make changes
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX; this.y = positionY;
 			
 			// en passant
 			if (whiteEnPassantLeft) {
+				temp = chess.Chess.board[x][y-1];
 				chess.Chess.board[x][y-1] = null;
 				whiteEnPassantLeft = false;
+				enpassantType = "wL";
 			}
 			if (whiteEnPassantRight) {
+				temp = chess.Chess.board[x][y-1];
 				chess.Chess.board[x][y-1] = null;
 				whiteEnPassantRight = false;
+				enpassantType = "wR";
 			}
 			if (blackEnPassantLeft) {
+				temp = chess.Chess.board[x][y+1];
 				chess.Chess.board[x][y+1] = null;
 				blackEnPassantLeft = false;
+				enpassantType = "bL";
 			}
 			if (blackEnPassantRight) {
+				temp = chess.Chess.board[x][y+1];
 				chess.Chess.board[x][y+1] = null;
 				blackEnPassantRight = false;
+				enpassantType = "bR";
 			}
 				
-			
 			this.isFirstMove = false;
 			
 			// canPromote
 			if ((this.y == 7 && this.color.equals("white")) || (this.y == 0 && this.color.equals("black")))
 				canPromote = true;
 			
-			return true;
+			//makes sure to not place own king in check
+			if (!chess.Chess.kingCheck(color)) {
+				return true;
+			}
+			
+			// undo isFirstMove
+			isFirstMove = originalFirstMove;
+			// undo enPassant
+			switch (enpassantType) {
+			case "wL":
+				chess.Chess.board[x][y-1] = temp;
+				break;
+			case "wR":
+				chess.Chess.board[x][y-1] = temp;
+				break;
+			case "bL":
+				chess.Chess.board[x][y+1] = temp;
+				break;
+			case "bR":
+				chess.Chess.board[x][y+1] = temp;
+				break;
+			}
+
+			// undo canPromote
+			canPromote = false;
+			
+			//need to undo changes
+			this.x = oldX; this.y = oldY;
+			chess.Chess.board[x][y] = this;
+			chess.Chess.board[positionX][positionY] = oldPiece;
 
 		}
 		 
@@ -258,10 +304,7 @@ public class Pawn extends Piece {
 		return "wp";
 	}
 	
-	public void Promote(String instruction) {
-		
-		System.out.println("we got this far and request is: "+instruction);
-		
+	public void Promote(String instruction) {		
 		
 		if (instruction.length() < 6) {
 			chess.Chess.board[x][y] = new Queen(x,y,color);
@@ -276,14 +319,6 @@ public class Pawn extends Piece {
 			case "q":
 			case "Q":
 				chess.Chess.board[x][y] = new Queen(x,y,color);
-				break;
-			case "k":
-			case "K":
-				chess.Chess.board[x][y] = new King(x,y,color);
-				break;
-			case "p":
-			case "P":
-				chess.Chess.board[x][y] = new Pawn(x,y,color);
 				break;
 			case "b":
 			case "B":
