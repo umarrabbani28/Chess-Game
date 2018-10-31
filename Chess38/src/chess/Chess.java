@@ -96,7 +96,7 @@ public class Chess {
 					if (kingCheck(checkColor)) {
 						// checks for checkmate
 						
-						if (!isCheckMate(checkColor)) {
+						if (!noLegalMoves(checkColor)) {
 							if (isWhiteTurn)
 								blackChecked = true;
 							else
@@ -113,9 +113,18 @@ public class Chess {
 							}
 							break;
 						}
-					} 
+					} else {
+						// no moves left for opponent but king isn't in check (stalemate)
+						if (noLegalMoves(checkColor)) {
+							System.out.println("Stalemate");
+							System.out.println();
+							System.out.println("draw");
+							gameOver = true;
+							break;
+						}
+					}				
 					
-					drawBoard();
+					drawBoard();					
 					isWhiteTurn = !isWhiteTurn;
 					
 				} else {
@@ -226,7 +235,7 @@ public class Chess {
 	}
 	
 	// checks for any moves that can escape the check
-	public static boolean isCheckMate(String color) {
+	public static boolean noLegalMoves(String color) {
 		// loop through all places on the board
 		// if piece of selected color is found
 			// call piece.isValid with all possible places on the board
