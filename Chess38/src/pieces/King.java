@@ -41,6 +41,43 @@ public class King extends Piece {
 
 		return false;
 	}
+	
+	@Override
+	public boolean testMove(int positionX, int positionY) {
+		if (this.isValid(positionX, positionY)) {
+
+			// incase of undo
+			Piece oldPiece = chess.Chess.board[positionX][positionY];
+			int oldX = x;
+			int oldY = y;
+
+			chess.Chess.board[positionX][positionY] = this;
+			chess.Chess.board[x][y] = null;
+			this.x = positionX;
+			this.y = positionY;
+
+			// makes sure to not place own king in check
+			if (!chess.Chess.kingCheck(color)) {
+				hasMoved = true;
+				
+				// need to undo changes
+				this.x = oldX;
+				this.y = oldY;
+				chess.Chess.board[x][y] = this;
+				chess.Chess.board[positionX][positionY] = oldPiece;
+				
+				return true;
+			}
+			// need to undo changes
+			this.x = oldX;
+			this.y = oldY;
+			chess.Chess.board[x][y] = this;
+			chess.Chess.board[positionX][positionY] = oldPiece;
+
+		}
+
+		return false;
+	}
 
 	@Override
 	public boolean isValid(int positionX, int positionY) {

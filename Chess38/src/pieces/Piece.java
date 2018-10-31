@@ -36,6 +36,40 @@ public abstract class Piece {
 		return false;
 	}
 	
+	// does the same thing as move but then undos the move right after a successful move
+	public boolean testMove(int positionX, int positionY) {
+		if (this.isValid(positionX, positionY)) {
+			// incase of undo
+			Piece oldPiece = chess.Chess.board[positionX][positionY];
+			int oldX = x;
+			int oldY = y;
+
+			chess.Chess.board[positionX][positionY] = this;
+			chess.Chess.board[x][y] = null;
+			this.x = positionX;
+			this.y = positionY;
+
+			// makes sure to not place own king in check
+			if (!chess.Chess.kingCheck(color)) {
+				// need to undo changes
+				this.x = oldX;
+				this.y = oldY;
+				chess.Chess.board[x][y] = this;
+				chess.Chess.board[positionX][positionY] = oldPiece;
+				
+				return true;
+			}
+			// need to undo changes
+			this.x = oldX;
+			this.y = oldY;
+			chess.Chess.board[x][y] = this;
+			chess.Chess.board[positionX][positionY] = oldPiece;
+
+		}
+
+		return false;
+	}
+	
 	public String getColor() {
 		return color;
 	}

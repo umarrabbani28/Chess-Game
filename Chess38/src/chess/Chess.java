@@ -96,13 +96,22 @@ public class Chess {
 					if (kingCheck(checkColor)) {
 						// checks for checkmate
 						
-						if (!isCheckMate()) {
+						if (!isCheckMate(checkColor)) {
 							if (isWhiteTurn)
 								blackChecked = true;
 							else
 								whiteChecked = true;
 						} else {
 							// game is over
+							gameOver = true;
+							System.out.println("Checkmate");
+							System.out.println();
+							if (isWhiteTurn) {
+								System.out.println("White wins");
+							} else {
+								System.out.println("Black wins");
+							}
+							break;
 						}
 					} 
 					
@@ -201,7 +210,7 @@ public class Chess {
 	// given a color, finds it's king, and sees if it is in check
 	public static boolean kingCheck(String color) {
 		
-		// find opponents king
+		// find king
 		for (int i=0;i<=7;i++) {
 			for (int j=0;j<=7;j++) {
 				Piece temp = board[i][j];
@@ -216,9 +225,39 @@ public class Chess {
 		return false;
 	}
 	
-	public static boolean isCheckMate() {
+	// checks for any moves that can escape the check
+	public static boolean isCheckMate(String color) {
+		// loop through all places on the board
+		// if piece of selected color is found
+			// call piece.isValid with all possible places on the board
+			// if isValid is true
+				// make the move
+				// call ischeck on king of that color
+				// if no check
+					// return false
+				// undo move
 		
-		return false;
+		for (int i=0;i<=7;i++) {
+			for (int j=0;j<=7;j++) {
+				Piece piece = board[i][j];
+				if (piece != null && piece.getColor().equals(color)) {
+					for (int m=0;m<=7;m++) {
+						for (int n=0;n<=7;n++) {
+							if (piece.testMove(m, n)) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	public static boolean isStalemate(String color) {
+		
+		return true;
 	}
 	
 	public static boolean executeInstruction(String instruction) {
