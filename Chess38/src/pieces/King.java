@@ -1,10 +1,45 @@
 package pieces;
 
 public class King extends Piece {
+	
+	// used for castling
+	boolean hasMoved = false; 
+	boolean hasCastled = false;
 
 	public King(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
+	}
+	
+	@Override
+	// moves actual piece
+	public boolean move(int positionX, int positionY) {
+		if (this.isValid(positionX, positionY)) {
+
+			// incase of undo
+			Piece oldPiece = chess.Chess.board[positionX][positionY];
+			int oldX = x;
+			int oldY = y;
+
+			chess.Chess.board[positionX][positionY] = this;
+			chess.Chess.board[x][y] = null;
+			this.x = positionX;
+			this.y = positionY;
+
+			// makes sure to not place own king in check
+			if (!chess.Chess.kingCheck(color)) {
+				hasMoved = true;
+				return true;
+			}
+			// need to undo changes
+			this.x = oldX;
+			this.y = oldY;
+			chess.Chess.board[x][y] = this;
+			chess.Chess.board[positionX][positionY] = oldPiece;
+
+		}
+
+		return false;
 	}
 
 	@Override
@@ -360,6 +395,87 @@ public class King extends Piece {
 		}
 		
 		return false;
+	}
+	
+	// checks if castling is possible
+	public boolean castle(int spotX, int spotY) {
+		// first check if king has moved
+		if (this.hasMoved)
+			return false;
+		// then find rook in the direction of spotX and see if it moved
+		Piece rook;
+		if (spotX < this.x)
+			rook = chess.Chess.board[0][this.y];
+		else
+			rook = chess.Chess.board[7][this.y];
+		
+		// if no piece exists
+		if (rook == null)
+			return false;
+		// if piece isn't rook
+		if (!(rook instanceof Rook))
+			return false;
+		// wrong color rook
+		if (!rook.color.equals(this.color))
+			return false;
+		// has moved already
+		if (((Rook) rook).hasMoved)
+			return false;
+			
+		// then see if there are any pieces between king and rook
+		Piece temp;
+		if (spotX < this.x) {
+			for (int i=this.x-1;i>=rook.getX()+1;i--) {
+				temp = chess.Chess.board[i][this.y];
+				if (temp != null)
+					return false;
+			}
+		} else {
+			for (int i=this.x+1;i<=rook.getX()-1;i++) {
+				temp = chess.Chess.board[i][this.y];
+				if (temp != null)
+					return false;
+			}
+		}
+		// check if king is in check
+		// check if spot king lands on and spot between are in check
+		if (spotX < this.x) {
+			if (this.isCheck(this.x, this.y) || this.isCheck(this.x-1, this.y) || this.isCheck(this.x-2, this.y))
+				return false;
+		} else {
+			if (this.isCheck(this.x, this.y) || this.isCheck(this.x+1, this.y) || this.isCheck(this.x+2, this.y))
+				return false;
+		}
+		
+		// does the castling
+		castleImplement(spotX,spotY,(Rook)rook);
+		
+		return true;
+	}
+	
+	// implements castling
+	public void castleImplement(int spotX, int spotY, Rook rook) {
+		if (spotX < this.x) {
+			//move king
+			chess.Chess.board[spotX][this.y] = this;
+			chess.Chess.board[this.x][this.y] = null;
+			this.x = spotX; 
+			
+			//move rook
+			chess.Chess.board[spotX+1][this.y] = rook;
+			chess.Chess.board[rook.x][this.y] = null;
+			rook.x = spotX+1;
+		} else if (spotX > this.x) {
+			//move king
+			chess.Chess.board[spotX][this.y] = this;
+			chess.Chess.board[this.x][this.y] = null;
+			this.x = spotX; 
+			
+			//move rook
+			chess.Chess.board[spotX-1][this.y] = rook;
+			chess.Chess.board[rook.x][this.y] = null;
+			rook.x = spotX-1;
+		}		
 	}
 	
 	public String toString() {

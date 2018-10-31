@@ -302,9 +302,19 @@ public class Chess {
 			
 		
 		if (allowedPiece) {
-			if (piece.move(spotX, spotY)) {
-				
-				// en passant
+			
+			//user requesting castling
+			if (piece instanceof King) {
+				if (spotY == piece.getY() && (spotX == piece.getX()-2 || spotX == piece.getX()+2)) {
+					if (((King)piece).castle(spotX,spotY)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+			
+			if (piece.move(spotX, spotY)) {			
 				if (piece instanceof Pawn) {
 					
 					// promotion
@@ -312,6 +322,7 @@ public class Chess {
 						((Pawn)piece).Promote(instruction);
 					}
 					
+					// en passant
 					if (((Pawn) piece).justMovedDouble) {					
 						pawnMovedDouble = 2;
 						if (enPassantPawn != null)
