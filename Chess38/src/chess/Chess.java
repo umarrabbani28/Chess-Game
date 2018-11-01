@@ -25,7 +25,8 @@ public class Chess {
 	
 	public static void main(String[] args) {
 		
-		initializeBoard();
+		//initializeBoard();
+		testBoard();
 		drawBoard();
 		
 		Scanner input = new Scanner(System.in);
@@ -107,6 +108,7 @@ public class Chess {
 								whiteChecked = true;
 						} else {
 							// game is over
+							drawBoard();
 							gameOver = true;
 							System.out.println("Checkmate");
 							System.out.println();
@@ -120,6 +122,7 @@ public class Chess {
 					} else {
 						// no moves left for opponent but king isn't in check (stalemate)
 						if (noLegalMoves(checkColor)) {
+							drawBoard();
 							System.out.println("Stalemate");
 							System.out.println();
 							System.out.println("draw");
@@ -150,6 +153,20 @@ public class Chess {
 		
 		input.close();
 		
+	}
+	
+	public static void testBoard() {
+		board = new Piece[8][8];
+		
+		board[0][0] = new King(0,0,"white");
+		board[3][7] = new King(3,7,"black");
+		
+		board[1][6] = new Pawn(1,6,"white");
+		board[1][5] = new Pawn(1,5,"white");
+		board[2][5] = new Pawn(2,5,"white");
+		board[3][4] = new Pawn(3,4,"white");
+		board[4][5] = new Pawn(4,5,"white");
+		board[5][6] = new Pawn(5,6,"white");
 	}
 	
 	// sets up initial game board
