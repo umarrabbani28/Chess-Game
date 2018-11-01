@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * abstract class that represents a physical piece
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */

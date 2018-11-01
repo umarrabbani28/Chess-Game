@@ -4,9 +4,12 @@ import java.util.Scanner;
 
 import pieces.*;
 
-/*
+/* 
+ * The main class that runs the game
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
+ * @version 1.0
  */
 public class Chess {
 	
@@ -25,8 +28,7 @@ public class Chess {
 	
 	public static void main(String[] args) {
 		
-		//initializeBoard();
-		testBoard();
+		initializeBoard();
 		drawBoard();
 		
 		Scanner input = new Scanner(System.in);
@@ -153,20 +155,6 @@ public class Chess {
 		
 		input.close();
 		
-	}
-	
-	public static void testBoard() {
-		board = new Piece[8][8];
-		
-		board[0][0] = new King(0,0,"white");
-		board[3][7] = new King(3,7,"black");
-		
-		board[1][6] = new Pawn(1,6,"white");
-		board[1][5] = new Pawn(1,5,"white");
-		board[2][5] = new Pawn(2,5,"white");
-		board[3][4] = new Pawn(3,4,"white");
-		board[4][5] = new Pawn(4,5,"white");
-		board[5][6] = new Pawn(5,6,"white");
 	}
 	
 	// sets up initial game board

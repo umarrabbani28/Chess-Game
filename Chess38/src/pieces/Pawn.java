@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * class representing pawn piece and its movement including en passant and promotion specials
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */

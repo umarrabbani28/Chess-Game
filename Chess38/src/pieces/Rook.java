@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * class represent the rook piece and its movement
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */

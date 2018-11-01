@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * class representing bishop piece and its movement
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */

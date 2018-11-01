@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * class representing the king piece and its movement including castling special
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */

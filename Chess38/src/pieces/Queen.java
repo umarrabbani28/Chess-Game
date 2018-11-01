@@ -1,6 +1,8 @@
 package pieces;
 
 /*
+ * class representing the queen piece and it movement
+ * 
  * @author Umar Rabbani
  * @author Parth Shah
  */
