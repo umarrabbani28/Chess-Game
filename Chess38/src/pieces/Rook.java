@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public class Rook extends Piece {
 
 	boolean hasMoved = false; // used for castling
@@ -18,15 +23,16 @@ public class Rook extends Piece {
 			Piece oldPiece = chess.Chess.board[positionX][positionY];
 			int oldX = x;
 			int oldY = y;
+			boolean oldHasMoved = hasMoved;
 
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX;
 			this.y = positionY;
 
+			hasMoved = true;
 			// makes sure to not place own king in check
 			if (!chess.Chess.kingCheck(color)) {
-				hasMoved = true;
 				return true;
 			}
 			// need to undo changes
@@ -34,6 +40,7 @@ public class Rook extends Piece {
 			this.y = oldY;
 			chess.Chess.board[x][y] = this;
 			chess.Chess.board[positionX][positionY] = oldPiece;
+			hasMoved = oldHasMoved;
 
 		}
 
@@ -48,21 +55,23 @@ public class Rook extends Piece {
 			Piece oldPiece = chess.Chess.board[positionX][positionY];
 			int oldX = x;
 			int oldY = y;
+			boolean oldHasMoved = hasMoved;
 
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX;
 			this.y = positionY;
+			
+			hasMoved = true;
 
 			// makes sure to not place own king in check
 			if (!chess.Chess.kingCheck(color)) {
-				hasMoved = true;
-				
 				// need to undo changes
 				this.x = oldX;
 				this.y = oldY;
 				chess.Chess.board[x][y] = this;
 				chess.Chess.board[positionX][positionY] = oldPiece;
+				this.hasMoved = oldHasMoved;
 				
 				return true;
 			}
@@ -71,6 +80,7 @@ public class Rook extends Piece {
 			this.y = oldY;
 			chess.Chess.board[x][y] = this;
 			chess.Chess.board[positionX][positionY] = oldPiece;
+			this.hasMoved = oldHasMoved;
 
 		}
 

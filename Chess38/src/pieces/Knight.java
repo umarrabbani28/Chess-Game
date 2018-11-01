@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public class Knight extends Piece {
 
 	public Knight(int x, int y, String color) {

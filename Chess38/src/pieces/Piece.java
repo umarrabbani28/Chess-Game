@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public abstract class Piece {
 	// position of piece on board
 	int x, y;

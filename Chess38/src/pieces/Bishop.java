@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public class Bishop extends Piece {
 
 	public Bishop(int x, int y, String color) {

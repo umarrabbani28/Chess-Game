@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public class Pawn extends Piece {
 
 	boolean isFirstMove = true; // used to check if it can move 2 spaces on first move

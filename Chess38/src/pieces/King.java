@@ -1,5 +1,10 @@
 package pieces;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
+
 public class King extends Piece {
 	
 	// used for castling
@@ -20,15 +25,17 @@ public class King extends Piece {
 			Piece oldPiece = chess.Chess.board[positionX][positionY];
 			int oldX = x;
 			int oldY = y;
+			boolean oldHasMoved = hasMoved;
 
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX;
 			this.y = positionY;
 
+			hasMoved = true;
+			
 			// makes sure to not place own king in check
 			if (!chess.Chess.kingCheck(color)) {
-				hasMoved = true;
 				return true;
 			}
 			// need to undo changes
@@ -36,6 +43,7 @@ public class King extends Piece {
 			this.y = oldY;
 			chess.Chess.board[x][y] = this;
 			chess.Chess.board[positionX][positionY] = oldPiece;
+			hasMoved = oldHasMoved;
 
 		}
 
@@ -50,21 +58,22 @@ public class King extends Piece {
 			Piece oldPiece = chess.Chess.board[positionX][positionY];
 			int oldX = x;
 			int oldY = y;
+			boolean oldHasMoved = hasMoved;
 
 			chess.Chess.board[positionX][positionY] = this;
 			chess.Chess.board[x][y] = null;
 			this.x = positionX;
 			this.y = positionY;
 
+			hasMoved = true;
 			// makes sure to not place own king in check
-			if (!chess.Chess.kingCheck(color)) {
-				hasMoved = true;
-				
+			if (!chess.Chess.kingCheck(color)) {				
 				// need to undo changes
 				this.x = oldX;
 				this.y = oldY;
 				chess.Chess.board[x][y] = this;
 				chess.Chess.board[positionX][positionY] = oldPiece;
+				hasMoved = oldHasMoved;
 				
 				return true;
 			}
@@ -73,6 +82,7 @@ public class King extends Piece {
 			this.y = oldY;
 			chess.Chess.board[x][y] = this;
 			chess.Chess.board[positionX][positionY] = oldPiece;
+			hasMoved = oldHasMoved;
 
 		}
 
@@ -437,8 +447,10 @@ public class King extends Piece {
 	// checks if castling is possible
 	public boolean castle(int spotX, int spotY) {
 		// first check if king has moved
-		if (this.hasMoved)
+		if (this.hasMoved || this.hasCastled) {
+			System.out.println("1");
 			return false;
+		}
 		// then find rook in the direction of spotX and see if it moved
 		Piece rook;
 		if (spotX < this.x)
@@ -447,41 +459,64 @@ public class King extends Piece {
 			rook = chess.Chess.board[7][this.y];
 		
 		// if no piece exists
-		if (rook == null)
+		if (rook == null) {
+			System.out.println("2");
 			return false;
+		}
 		// if piece isn't rook
-		if (!(rook instanceof Rook))
+		if (!(rook instanceof Rook)) {
+			System.out.println("3");
+
 			return false;
+		}
 		// wrong color rook
-		if (!rook.color.equals(this.color))
+		if (!rook.color.equals(this.color)) {
+			System.out.println("4");
+
 			return false;
+		}
 		// has moved already
-		if (((Rook) rook).hasMoved)
+		if (((Rook) rook).hasMoved) {
+			System.out.println("5");
+
 			return false;
+		}
 			
 		// then see if there are any pieces between king and rook
 		Piece temp;
 		if (spotX < this.x) {
 			for (int i=this.x-1;i>=rook.getX()+1;i--) {
 				temp = chess.Chess.board[i][this.y];
-				if (temp != null)
+				if (temp != null) {
+					System.out.println("6");
+
 					return false;
+				}
 			}
 		} else {
 			for (int i=this.x+1;i<=rook.getX()-1;i++) {
 				temp = chess.Chess.board[i][this.y];
-				if (temp != null)
+				if (temp != null) {
+					System.out.println("7");
+
 					return false;
+				}
 			}
 		}
 		// check if king is in check
 		// check if spot king lands on and spot between are in check
 		if (spotX < this.x) {
-			if (this.isCheck(this.x, this.y) || this.isCheck(this.x-1, this.y) || this.isCheck(this.x-2, this.y))
+			if (this.isCheck(this.x, this.y) || this.isCheck(this.x-1, this.y) || this.isCheck(this.x-2, this.y)) {
+				System.out.println("8");
+
 				return false;
+			}
 		} else {
-			if (this.isCheck(this.x, this.y) || this.isCheck(this.x+1, this.y) || this.isCheck(this.x+2, this.y))
+			if (this.isCheck(this.x, this.y) || this.isCheck(this.x+1, this.y) || this.isCheck(this.x+2, this.y)) {
+				System.out.println("9");
+
 				return false;
+			}
 		}
 		
 		// does the castling
@@ -513,6 +548,8 @@ public class King extends Piece {
 			chess.Chess.board[rook.x][this.y] = null;
 			rook.x = spotX-1;
 		}		
+		
+		this.hasCastled = true;
 	}
 	
 	public String toString() {

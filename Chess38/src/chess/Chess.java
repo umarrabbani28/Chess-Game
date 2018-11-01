@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 import pieces.*;
 
+/*
+ * @author Umar Rabbani
+ * @author Parth Shah
+ */
 public class Chess {
 	
 	public static Piece[][] board; // game board
