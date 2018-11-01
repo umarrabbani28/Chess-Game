@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class representing pawn piece and its movement including en passant and promotion specials
  * 
  * @author Umar Rabbani
@@ -9,23 +9,36 @@ package pieces;
 
 public class Pawn extends Piece {
 
-	boolean isFirstMove = true; // used to check if it can move 2 spaces on first move
+	/** identifies if the pawn has yet to make a move*/
+	boolean isFirstMove = true;
 
-	// used for en passant
+	/** identifies if the pawn just moved 2 places in one turn */
 	public boolean justMovedDouble = false;
+	/** identifies if a white pawn can en passant towards the left*/
 	boolean whiteEnPassantLeft = false;
+	/** identifies if a white pawn can en passant towards the right*/
 	boolean whiteEnPassantRight = false;
+	/** identifies if a black pawn can en passant towards the left*/
 	boolean blackEnPassantLeft = false;
+	/** identifies if a black pawn can en passant towards the right*/
 	boolean blackEnPassantRight = false;
 
-	// used for promotion
+	/** identifies if a pawn is ready for promotion*/
 	public boolean canPromote = false;
 
+	/**
+	 * constructor for pawn
+	 * @param x This is the x coordinate of the piece
+	 * @param y This is the y coordinate of the piece
+	 * @param color This is the color of the piece
+	 */
 	public Pawn(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
-
+	/**
+	 * @see pieces.Piece#move(int, int)
+	 */
 	@Override
 	public boolean move(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -115,6 +128,9 @@ public class Pawn extends Piece {
 
 	}
 
+	/**
+	 * @see pieces.Piece#testMove(int, int)
+	 */
 	@Override
 	public boolean testMove(int positionX, int positionY) {
 		if (this.isValid(positionX, positionY)) {
@@ -207,6 +223,9 @@ public class Pawn extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -398,13 +417,19 @@ public class Pawn extends Piece {
 
 		return false;
 	}
-
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bp";
 		return "wp";
 	}
 
+	/**
+	 * promotes a pawn to the user requested piece when arriving at its 8th rank
+	 * @param instruction This is the user instruction including where the piece is moving and what it is to be promoted to
+	 */
 	public void Promote(String instruction) {
 
 		if (instruction.length() < 6) {

@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class representing the queen piece and it movement
  * 
  * @author Umar Rabbani
@@ -9,11 +9,20 @@ package pieces;
 
 public class Queen extends Piece {
 
+	/**
+	 * constructor for queen
+	 * @param x This is the x coordinate of the piece
+	 * @param y This is the y coordinate of the piece
+	 * @param color This is the color of the piece
+	 */
 	public Queen(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -209,7 +218,9 @@ public class Queen extends Piece {
 		
 		return false;
 	}
-	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bQ";

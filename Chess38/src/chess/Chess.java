@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import pieces.*;
 
-/* 
+/**
  * The main class that runs the game
  * 
  * @author Umar Rabbani
@@ -13,19 +13,34 @@ import pieces.*;
  */
 public class Chess {
 	
-	public static Piece[][] board; // game board
-	public static boolean gameOver = false; // if game isn't over
-	public static boolean isWhiteTurn = true; // who's turn it is
-	public static boolean drawRequested = false; // a draw is requested
+	/** the main game board*/
+	public static Piece[][] board;
 	
-	//used for check
+	/** identifies if the game is over */
+	public static boolean gameOver = false;
+	
+	/** identifies who's turn it is */
+	public static boolean isWhiteTurn = true;
+	
+	/** identifies if a draw is requested by the opponent*/
+	public static boolean drawRequested = false;
+	
+	/** identifies if the black king is in check */
 	public static boolean blackChecked = false;
+	
+	/** identifies if the white king is in check */
 	public static boolean whiteChecked = false;
 	
-	// used for en passant
+	/** identifies if a pawn has just moved 2 places in one turn */
 	public static int pawnMovedDouble = 0; 
+	
+	/** identifies the pawn the is taken when doing en passant */
 	public static Piece enPassantPawn = null;
 	
+	/**
+	 * main method that starts and runs the game
+	 * @param args unused
+	 */
 	public static void main(String[] args) {
 		
 		initializeBoard();
@@ -157,7 +172,9 @@ public class Chess {
 		
 	}
 	
-	// sets up initial game board
+	/**
+	 * sets up the initial game board with all pieces in correct spot
+	 */
 	public static void initializeBoard() {
 		board = new Piece[8][8];
 		
@@ -203,7 +220,9 @@ public class Chess {
 		
 	}
 	
-	// print out board
+	/**
+	 * method that draws the current state of the board to the log
+	 */
 	public static void drawBoard() {	
 		for (int i=7;i>=0;i--) {
 			for (int j=0;j<8;j++) {
@@ -225,7 +244,11 @@ public class Chess {
 		System.out.println();
 	}
 	
-	// given a color, finds it's king, and sees if it is in check
+	/**
+	 * given a color, finds it's king, and sees if it is in check
+	 * @param color This is the color of the king being searched for and checked
+	 * @return boolean This returns whether or not the king of the color requested is in check
+	 */
 	public static boolean kingCheck(String color) {
 		
 		// find king
@@ -243,7 +266,11 @@ public class Chess {
 		return false;
 	}
 	
-	// checks for any moves that can escape the check
+	/**
+	 *  checks if there are any legal moves a player can make given a color
+	 *  @param color This is the color of the player who's legal moves are searched
+	 *  @return boolean This returns whether or not the selected player has any legal moves left to make
+	 */
 	public static boolean noLegalMoves(String color) {
 		// loop through all places on the board
 		// if piece of selected color is found
@@ -272,12 +299,11 @@ public class Chess {
 		
 		return true;
 	}
-	
-	public static boolean isStalemate(String color) {
-		
-		return true;
-	}
-	
+	/**
+	 * given user input, this method tries to execute the instruction and lets the caller know if it was executed successfully or not
+	 * @param instruction This is the user instruction that the method tries to execute
+	 * @return boolean This is where the method tells the caller if the instruction was executed successfully or not
+	 */
 	public static boolean executeInstruction(String instruction) {
 		String selectedPiece = instruction.substring(0, 2);
 		String selectedSpot = instruction.substring(3, 5);

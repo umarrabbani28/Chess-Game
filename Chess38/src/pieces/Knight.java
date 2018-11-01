@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class representing the knight piece and its movement
  * 
  * @author Umar Rabbani
@@ -9,11 +9,20 @@ package pieces;
 
 public class Knight extends Piece {
 
+	/**
+	 * constructor for knight
+	 * @param x This is the x coordinate for the piece
+	 * @param y This is the y coordinate for the piece
+	 * @param color This is the color of the piece
+	 */
 	public Knight(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -109,6 +118,9 @@ public class Knight extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bN";

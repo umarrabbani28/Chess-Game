@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class representing the king piece and its movement including castling special
  * 
  * @author Umar Rabbani
@@ -9,17 +9,26 @@ package pieces;
 
 public class King extends Piece {
 	
-	// used for castling
+	/** identifies whether or not the piece has moved yet in the game */
 	boolean hasMoved = false; 
+	/** identifies whether or not the piece has castled yet in the game */
 	boolean hasCastled = false;
 
+	/**
+	 * constructor for king
+	 * @param x This is the x coordinate of the piece
+	 * @param y This is the y coordinate of the piece
+	 * @param color This is the color of the piece
+	 */
 	public King(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * @see pieces.Piece#move(int, int)
+	 */
 	@Override
-	// moves actual piece
 	public boolean move(int positionX, int positionY) {
 		if (this.isValid(positionX, positionY)) {
 
@@ -52,6 +61,9 @@ public class King extends Piece {
 		return false;
 	}
 	
+	/**
+	 * @see pieces.Piece#testMove(int, int)
+	 */
 	@Override
 	public boolean testMove(int positionX, int positionY) {
 		if (this.isValid(positionX, positionY)) {
@@ -91,6 +103,9 @@ public class King extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -179,6 +194,12 @@ public class King extends Piece {
 		return false;
 	}
 	
+	/**
+	 * checks if a certain position of a king would place it in check
+	 * @param positionX This is the x coordinate of the position to be tested
+	 * @param positionY This is the y coordinate of the position to be tested
+	 * @return boolean This returns whether or not a king in the requested position would be in check
+	 */
 	public boolean isCheck(int positionX, int positionY) {
 		// check for attacks from each type of piece
 		
@@ -446,7 +467,12 @@ public class King extends Piece {
 		return false;
 	}
 	
-	// checks if castling is possible
+	/**
+	 * checks to see if castling to the requested location is permitted and calls the implementing method castleImplement()
+	 * @param spotX This is the x coordinate of the target location for the king
+	 * @param spotY This is the y coordinate of the target location for the king
+	 * @return boolean This returns whether or not castling was successful
+	 */
 	public boolean castle(int spotX, int spotY) {
 		// first check if king has moved
 		if (this.hasMoved || this.hasCastled) {
@@ -527,7 +553,12 @@ public class King extends Piece {
 		return true;
 	}
 	
-	// implements castling
+	/**
+	 * implements castling to the specified location
+	 * @param spotX This is the x coordinate of the target location for the king
+	 * @param spotY This is the y coordinate of the target location for the king
+	 * @param rook This is the rook piece that the king completes castling with
+	 */
 	public void castleImplement(int spotX, int spotY, Rook rook) {
 		if (spotX < this.x) {
 			//move king
@@ -553,7 +584,9 @@ public class King extends Piece {
 		
 		this.hasCastled = true;
 	}
-	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bK";

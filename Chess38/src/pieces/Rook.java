@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class represent the rook piece and its movement
  * 
  * @author Umar Rabbani
@@ -9,15 +9,24 @@ package pieces;
 
 public class Rook extends Piece {
 
-	boolean hasMoved = false; // used for castling
+	/** identifies whether or not the piece has moved yet in the game */
+	boolean hasMoved = false; 
 	
+	/**
+	 * constructor for rook
+	 * @param x This is the x coordinate of the piece
+	 * @param y This is the y coordinate of the piece
+	 * @param color This is the color of the piece
+	 */
 	public Rook(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * @see pieces.Piece#move(int, int)
+	 */
 	@Override
-	// moves actual piece
 	public boolean move(int positionX, int positionY) {
 		if (this.isValid(positionX, positionY)) {
 
@@ -49,6 +58,9 @@ public class Rook extends Piece {
 		return false;
 	}
 	
+	/**
+	 * @see pieces.Piece#testMove(int, int)
+	 */
 	@Override
 	public boolean testMove(int positionX, int positionY) {
 		if (this.isValid(positionX, positionY)) {
@@ -89,6 +101,9 @@ public class Rook extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -186,6 +201,9 @@ public class Rook extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bR";

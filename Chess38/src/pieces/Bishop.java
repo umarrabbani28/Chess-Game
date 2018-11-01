@@ -1,6 +1,6 @@
 package pieces;
 
-/*
+/**
  * class representing bishop piece and its movement
  * 
  * @author Umar Rabbani
@@ -9,11 +9,20 @@ package pieces;
 
 public class Bishop extends Piece {
 
+	/**
+	 * constructor for bishop
+	 * @param x This is the x coordinate of the piece
+	 * @param y This is the y coordinate of the piece
+	 * @param color This is the color of the piece
+	 */
 	public Bishop(int x, int y, String color) {
 		super(x, y, color);
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see pieces.Piece#isValid(int, int)
+	 */
 	@Override
 	public boolean isValid(int positionX, int positionY) {
 		// TODO Auto-generated method stub
@@ -129,6 +138,9 @@ public class Bishop extends Piece {
 		return false;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		if (color.equals("black"))
 			return "bB";
