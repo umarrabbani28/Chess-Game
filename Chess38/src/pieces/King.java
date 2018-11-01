@@ -476,7 +476,6 @@ public class King extends Piece {
 	public boolean castle(int spotX, int spotY) {
 		// first check if king has moved
 		if (this.hasMoved || this.hasCastled) {
-			System.out.println("1");
 			return false;
 		}
 		// then find rook in the direction of spotX and see if it moved
@@ -488,25 +487,18 @@ public class King extends Piece {
 		
 		// if no piece exists
 		if (rook == null) {
-			System.out.println("2");
 			return false;
 		}
 		// if piece isn't rook
 		if (!(rook instanceof Rook)) {
-			System.out.println("3");
-
 			return false;
 		}
 		// wrong color rook
 		if (!rook.color.equals(this.color)) {
-			System.out.println("4");
-
 			return false;
 		}
 		// has moved already
 		if (((Rook) rook).hasMoved) {
-			System.out.println("5");
-
 			return false;
 		}
 			
@@ -516,8 +508,6 @@ public class King extends Piece {
 			for (int i=this.x-1;i>=rook.getX()+1;i--) {
 				temp = chess.Chess.board[i][this.y];
 				if (temp != null) {
-					System.out.println("6");
-
 					return false;
 				}
 			}
@@ -525,8 +515,6 @@ public class King extends Piece {
 			for (int i=this.x+1;i<=rook.getX()-1;i++) {
 				temp = chess.Chess.board[i][this.y];
 				if (temp != null) {
-					System.out.println("7");
-
 					return false;
 				}
 			}
@@ -535,14 +523,10 @@ public class King extends Piece {
 		// check if spot king lands on and spot between are in check
 		if (spotX < this.x) {
 			if (this.isCheck(this.x, this.y) || this.isCheck(this.x-1, this.y) || this.isCheck(this.x-2, this.y)) {
-				System.out.println("8");
-
 				return false;
 			}
 		} else {
 			if (this.isCheck(this.x, this.y) || this.isCheck(this.x+1, this.y) || this.isCheck(this.x+2, this.y)) {
-				System.out.println("9");
-
 				return false;
 			}
 		}
