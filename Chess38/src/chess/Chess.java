@@ -5,7 +5,7 @@ import java.util.Scanner;
 import pieces.*;
 
 /**
- * The main class that runs the game
+ * The main class that runs the game!
  * 
  * @author Umar Rabbani
  * @author Parth Shah
